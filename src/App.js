@@ -1,108 +1,97 @@
-import React, { useState, useEffect, useRef } from "react";
-import List from "./List";
-import Alert from "./Alert";
+import React, { useState } from "react";
+import { QRCode } from "react-qr-svg";
 
-const getLocalStorage = () => {
-  let list = localStorage.getItem("list");
-  if (list) {
-    return (list = JSON.parse(localStorage.getItem("list")));
-  } else {
-    return [];
-  }
-};
-function App() {
-  const [task, setTask] = useState("");
-  const [list, setList] = useState(getLocalStorage);
-  const [isEditing, setIsEditing] = useState(false);
-  const [editId, setEditId] = useState(null);
-  const [alert, setAlert] = useState({
-    show: false,
-    msg: "",
-    type: "",
-  });
-  const inputContainer = useRef(null);
-
+const ControlledInputs = () => {
+  const [person, setPerson] = useState({ firstName: "", email: "", age: "" });
+  const [click, setClick] = useState(false);
+  const handleChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setPerson({ ...person, [name]: value });
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!task) {
-      //display alert
-      showAlert(true, "danger", "Please enter Value");
-    } else if (task && isEditing) {
-      //deal with edit
-      setList(
-        list.map((item) => {
-          if (item.id === editId) {
-            return { ...item, title: task };
-          }
-          return item;
-        })
-      );
-      setTask("");
-      setEditId(null);
-      setIsEditing(false);
-      showAlert(true, "success", "Changes Saved");
-    } else {
-      //show alert
-      showAlert(true, "success", "Task Added to the List");
-      const newItem = { id: new Date().getTime().toString(), title: task };
-      setList([...list, newItem]);
-      setTask("");
+    if (
+      person.firstName &&
+      person.email &&
+      person.age &&
+      person.number &&
+      person.sex
+    ) {
+      setClick(true);
     }
   };
-  useEffect(() => {
-    inputContainer.current.focus();
-  });
 
-  const showAlert = (show = false, type = "", msg = "") => {
-    setAlert({ show, type, msg });
-  };
-  const clearList = () => {
-    showAlert(true, "danger", "All Tasks Cleared");
-    setList([]);
-  };
-  const removeTask = (id) => {
-    showAlert(true, "danger", "Task Removed");
-    setList(list.filter((item) => item.id !== id));
-  };
-  const editTask = (id) => {
-    const specificItem = list.find((item) => item.id === id);
-    setIsEditing(true);
-    setEditId(id);
-    setTask(specificItem.title);
-  };
-  useEffect(() => {
-    localStorage.setItem("list", JSON.stringify(list));
-  }, [list]);
   return (
-    <section className="section-center">
-      <form className="grocery-form" onSubmit={handleSubmit}>
-        {alert.show && (
-          <Alert {...alert} removeAlert={showAlert} list={list}></Alert>
-        )}
-        <h3>Todo List</h3>
-        <div className="form-control">
-          <input
-            type="text"
-            placeholder="Enter your task here"
-            value={task}
-            onChange={(e) => setTask(e.target.value)}
-            ref={inputContainer}
+    <>
+      <article className="form">
+        <h2>Enter Patient Details</h2>
+        <form>
+          <div className="form-control">
+            <label htmlFor="firstName">Patient Name</label>
+            <input
+              type="text"
+              id="firstName"
+              name="firstName"
+              value={person.firstName}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="form-control">
+            <label htmlFor="email">Email ID</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={person.email}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="form-control">
+            <label htmlFor="age">Age</label>
+            <input
+              type="number"
+              id="age"
+              name="age"
+              value={person.age}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="form-control">
+            <label htmlFor="number">Contact No.</label>
+            <input
+              type="number"
+              id="number"
+              name="number"
+              value={person.number}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="form-control">
+            <label htmlFor="sex">Sex</label>
+            <input
+              type="text"
+              id="sex"
+              name="sex"
+              value={person.sex}
+              onChange={handleChange}
+            />
+          </div>
+          <button type="submit" className="btn" onClick={handleSubmit}>
+            Generate QR Code
+          </button>
+        </form>
+      </article>
+      <article className="form" style={{ textAlign: "center" }}>
+        <h4 style={{ textAlign: "center" }}>QR Code</h4>
+        {click ? (
+          <QRCode
+            value={`Patient Name:${person.firstName} \nPatient Sex:${person.sex} \nPatient Age:${person.age} \nPatient Email:${person.email} \nContact Number:${person.number}`}
           />
-          <button type="submit" className="submit-btn">
-            {isEditing ? "Edit" : "Add Task"}
-          </button>
-        </div>
-      </form>
-      {list.length > 0 && (
-        <div className="grocery-container">
-          <List items={list} removeTask={removeTask} editTask={editTask}></List>
-          <button className="clear-btn" onClick={clearList}>
-            Clear
-          </button>
-        </div>
-      )}
-    </section>
+        ) : null}
+      </article>
+    </>
   );
-}
+};
 
-export default App;
+export default ControlledInputs;
