@@ -16,7 +16,8 @@ const ControlledInputs = () => {
       person.email &&
       person.age &&
       person.number &&
-      person.sex
+      person.sex &&
+      person.bloodGroup
     ) {
       setClick(true);
     }
@@ -58,6 +59,16 @@ const ControlledInputs = () => {
             />
           </div>
           <div className="form-control">
+            <label htmlFor="bloodGroup">Blood Group</label>
+            <input
+              type="text"
+              id="bloodGroup"
+              name="bloodGroup"
+              value={person.bloodGroup}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="form-control">
             <label htmlFor="number">Contact No.</label>
             <input
               type="number"
@@ -69,13 +80,36 @@ const ControlledInputs = () => {
           </div>
           <div className="form-control">
             <label htmlFor="sex">Sex</label>
-            <input
-              type="text"
-              id="sex"
-              name="sex"
-              value={person.sex}
-              onChange={handleChange}
-            />
+            <label>
+              <input
+                type="radio"
+                id="sex"
+                name="sex"
+                value="Male"
+                onChange={handleChange}
+              />{" "}
+              Male
+            </label>
+            <label>
+              <input
+                type="radio"
+                id="sex"
+                name="sex"
+                value="Female"
+                onChange={handleChange}
+              />{" "}
+              Female
+            </label>
+            <label>
+              <input
+                type="radio"
+                id="sex"
+                name="sex"
+                value="Other"
+                onChange={handleChange}
+              />{" "}
+              Other
+            </label>
           </div>
           <button type="submit" className="btn" onClick={handleSubmit}>
             Generate QR Code
@@ -86,7 +120,7 @@ const ControlledInputs = () => {
         <h4 style={{ textAlign: "center" }}>QR Code</h4>
         {click ? (
           <QRCode
-            value={`Patient Name:${person.firstName} \nPatient Sex:${person.sex} \nPatient Age:${person.age} \nPatient Email:${person.email} \nContact Number:${person.number}`}
+            value={`XYZ Hospital\n_____________________\nPatient Name:${person.firstName} \nPatient Sex:${person.sex} \nPatient Age:${person.age} \nPatient Blood Group:${person.bloodGroup} \nPatient Email:${person.email} \nContact Number:${person.number}`}
           />
         ) : null}
       </article>
