@@ -318,3 +318,24 @@ p {
   text-transform: capitalize;
   cursor: pointer;
 }
+.radio {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.qrLogo {
+  max-height: 1em;
+}
+.generate {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.headerh2 {
+  font-size: 2.5em;
+}

@@ -17,7 +17,8 @@ const ControlledInputs = () => {
       person.age &&
       person.number &&
       person.sex &&
-      person.bloodGroup
+      person.bloodGroup &&
+      person.doctorName
     ) {
       setClick(true);
     }
@@ -26,8 +27,26 @@ const ControlledInputs = () => {
   return (
     <>
       <article className="form">
-        <h2>Enter Patient Details</h2>
+        <div className="header">
+          <img
+            src="https://ik.imagekit.io/anurag/logo_Y3fTs2tA5.png?ik-sdk-version=javascript-1.4.3&updatedAt=1645768568352"
+            alt="logo"
+            srcset=""
+          />
+          <h2 className="headerh2">XYZ HOSPITAL, Mohali</h2>
+        </div>
+
         <form>
+          <div className="form-control">
+            <label htmlFor="doctorName">Doctor Name</label>
+            <input
+              type="text"
+              id="doctorName"
+              name="doctorName"
+              value={person.doctorName}
+              onChange={handleChange}
+            />
+          </div>
           <div className="form-control">
             <label htmlFor="firstName">Patient Name</label>
             <input
@@ -78,7 +97,7 @@ const ControlledInputs = () => {
               onChange={handleChange}
             />
           </div>
-          <div className="form-control">
+          <div className="form-control radio">
             <label htmlFor="sex">Sex</label>
             <label>
               <input
@@ -111,16 +130,24 @@ const ControlledInputs = () => {
               Other
             </label>
           </div>
-          <button type="submit" className="btn" onClick={handleSubmit}>
-            Generate QR Code
-          </button>
+          <div className="generate">
+            <button type="submit" className="btn" onClick={handleSubmit}>
+              <img
+                className="qrLogo"
+                src="https://ik.imagekit.io/anurag/6498744_smartphone_mobile_qr_ui_code_icon_xm2zu9HYp.png?ik-sdk-version=javascript-1.4.3&updatedAt=1645769057793"
+                alt="qr"
+                srcset=""
+              />{" "}
+              Generate QR Code
+            </button>
+          </div>
         </form>
       </article>
       <article className="form" style={{ textAlign: "center" }}>
         <h4 style={{ textAlign: "center" }}>QR Code</h4>
         {click ? (
           <QRCode
-            value={`XYZ Hospital\n_____________________\nPatient Name:${person.firstName} \nPatient Sex:${person.sex} \nPatient Age:${person.age} \nPatient Blood Group:${person.bloodGroup} \nPatient Email:${person.email} \nContact Number:${person.number}`}
+            value={`XYZ Hospital\n_____________________\nDoctor Name:Dr.${person.doctorName} \nPatient Name:${person.firstName} \nPatient Sex:${person.sex} \nPatient Age:${person.age} \nPatient Blood Group:${person.bloodGroup} \nPatient Email:${person.email} \nContact Number:${person.number}`}
           />
         ) : null}
       </article>
