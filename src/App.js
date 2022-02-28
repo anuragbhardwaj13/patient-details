@@ -1,7 +1,14 @@
 import React, { useState } from "react";
+import { useRef } from "react";
+import { useReactToPrint } from "react-to-print";
+
 import { QRCode } from "react-qr-svg";
 
 const ControlledInputs = () => {
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
   const [person, setPerson] = useState({ firstName: "", email: "", age: "" });
   const [click, setClick] = useState(false);
   const handleChange = (e) => {
@@ -143,8 +150,18 @@ const ControlledInputs = () => {
           </div>
         </form>
       </article>
-      <article className="form" style={{ textAlign: "center" }}>
+      <article style={{ textAlign: "center" }} className="form">
+        <button onClick={handlePrint} className="btn">
+          Print this out!
+        </button>
+      </article>
+      <article
+        className="form"
+        style={{ textAlign: "center" }}
+        ref={componentRef}
+      >
         <h4 style={{ textAlign: "center" }}>QR Code</h4>
+
         {click ? (
           <QRCode
             value={`XYZ Hospital\n_____________________\nDoctor Name:Dr.${person.doctorName} \nPatient Name:${person.firstName} \nPatient Sex:${person.sex} \nPatient Age:${person.age} \nPatient Blood Group:${person.bloodGroup} \nPatient Email:${person.email} \nContact Number:${person.number}`}
