@@ -6,9 +6,7 @@ import { QRCode } from "react-qr-svg";
 
 const ControlledInputs = () => {
   const componentRef = useRef();
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-  });
+
   const [person, setPerson] = useState({ firstName: "", email: "", age: "" });
   const [click, setClick] = useState(false);
   const handleChange = (e) => {
@@ -16,6 +14,10 @@ const ControlledInputs = () => {
     const value = e.target.value;
     setPerson({ ...person, [name]: value });
   };
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+    documentTitle: `${person.firstName}`,
+  });
   const handleSubmit = (e) => {
     e.preventDefault();
     if (
